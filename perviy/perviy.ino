@@ -22,7 +22,7 @@ void right() {
 }
 
 void left() {
-  if(X < 8){
+  if(X > 1){
     matrix.clearPixel(X, Y);
     X--;
     matrix.drawPixel(X, Y);
@@ -30,7 +30,7 @@ void left() {
 }
 
 void down() {
-  if(X < 8){
+  if(Y < 8){
     matrix.clearPixel(X, Y);
     Y++;
     matrix.drawPixel(X, Y);
@@ -38,7 +38,7 @@ void down() {
 }
 
 void up() {
-  if(X < 8){
+  if(Y > 1){
     matrix.clearPixel(X, Y);
     Y--;
     matrix.drawPixel(X, Y);
@@ -53,12 +53,12 @@ void setup() {
 void loop() {
 int x,y,z;
 z = digitalRead(Zj);
-x = analogRead(Xj);
-y = analogRead(Yj);
-if(x > 600){
+x = analogRead(Yj);
+y = analogRead(Xj);
+if(x < 600){
   right();
 }
-if(x < 400){
+if(x > 400){
   left();
 }
 if(y > 600){
