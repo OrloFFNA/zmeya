@@ -14,6 +14,16 @@ void setupSnake() {
   matrix.drawPixel(0, 0);
 }
 
+void drawBitMap(int bitMap[8][8]){
+  for(int y = 0; y < 8; y++){
+    for(int x = 0; x < 8; x++){
+     if(bitMap[y][x] == 1){
+      matrix.drawPixel(y, x);
+     }
+    }
+  }
+}
+
 void realRight() {
   if(X < 7){
     matrix.clearPixel(X, Y);
@@ -70,7 +80,19 @@ void setup() {
   
 }
 void loop() {
-int x,y,z;
+  int bitMap[8][8] = {
+    {0,0,0,0,0,0,0,0},
+    {0,1,1,0,0,1,1,0},
+    {0,1,1,0,0,1,1,0},
+    {0,1,1,1,1,1,1,0},
+    {0,1,1,1,1,1,1,0},
+    {0,1,1,0,0,1,1,0},
+    {0,1,1,0,0,1,1,0},
+    {0,0,0,0,0,0,0,0}
+  };
+  drawBitMap(bitMap);
+  delay(1000);
+/*int x,y,z;
 z = digitalRead(Zj);
 x = analogRead(Xj);
 y = analogRead(Yj);
