@@ -110,9 +110,22 @@ void setupSnake() {
   Y = random(8);
   snake.push_back(X,Y);
   */
+  snake.push_back(7 - 2, 2);
   snake.push_back(7 - 2, 3);
   snake.push_back(7 - 2, 4);
-  
+  snake.push_back(7 - 2, 5);
+  snake.push_back(7 - 2, 6);
+  snake.push_back(7 - 3, 6);
+  snake.push_back(7 - 3, 5);
+  snake.push_back(7 - 3, 4);
+  snake.push_back(7 - 3, 3);
+  snake.push_back(7 - 3, 2);
+  snake.push_back(7 - 4, 2);
+  snake.push_back(7 - 4, 3);
+  snake.push_back(7 - 4, 4);
+  snake.push_back(7 - 4, 5);
+  snake.push_back(7 - 4, 6);
+  snake.push_back(7 - 5, 6);
 }
 
 void drawSnake() {
@@ -191,7 +204,7 @@ void up() {
 
 void setup() {
   matrix.begin();
-  Serial.begin(9600);
+  //Serial.begin(9600);
   setupSnake();
   
 }
@@ -201,7 +214,7 @@ List a;
 void loop() { 
  // snake.print();
   drawSnake();
- Serial.println(memoryFree());
+ //Serial.println(memoryFree());
   int x,y,z;
 z = digitalRead(Zj);
 x = analogRead(Xj);
@@ -224,7 +237,7 @@ else if(y > 700){
 else if(y < 300){
   realDown();
 }
-  delay(100);
+  delay(50);
   
   /*
  a.push_back(3,5);
