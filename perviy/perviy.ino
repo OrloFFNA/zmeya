@@ -4,9 +4,9 @@
 #define Zj 3
 
 
+//неважно
 
-class List{
-  class Node{
+class Node{
     public:
     int x;
     int y;
@@ -18,13 +18,14 @@ class List{
     }
   };
 
+class List{
   public:
   Node* head;
 
   List(){
     head = NULL;
   }
-
+//неважно
   void push_back(int x, int y){
     if (head == NULL){
       head = new Node(x, y);
@@ -45,8 +46,8 @@ class List{
         Serial.print( " " );
         Serial.println(current->y);
         current = current->next;
-        
       }
+      Serial.println();
   }
 
   void pop(){
@@ -70,22 +71,48 @@ class List{
   int getHeadY(){
     return head->y;
   }
+  bool notContains(int x, int y){
+    Node* current = head;
+    while (current){
+      if (x == current->x && y == current->y) return false;
+      current = current->next;
+    }
+    return true;
+  }
+ 
 
 };
 
 
 TroykaLedMatrix matrix;
 
-
-
-int X, Y;
+List snake;
 
 
 void setupSnake() {
+  /*
+  int X, Y;
   randomSeed(analogRead(0));
   X = random(8);
   Y = random(8);
-  matrix.drawPixel(0, 0);
+  snake.push_back(X,Y);
+  */
+  snake.push_back(7 - 1,3);
+  snake.push_back(7 - 1,2);
+  snake.push_back(7 - 1,1);
+  snake.push_back(7 - 1,0);
+  
+}
+
+void drawSnake() {
+  matrix.clear();
+  Node* current = snake.head;
+  while (current){
+    int x = current->x;
+    int y = current->y;
+    current = current->next;
+    matrix.drawPixel(y, x);
+  }
 }
  
 void drawBitMap(int bitMap[8][8]){
@@ -99,21 +126,23 @@ void drawBitMap(int bitMap[8][8]){
 }
 
 void realRight() {
-  if(X < 7){
-    matrix.clearPixel(X, Y);
-    X++;
-    matrix.drawPixel(X, Y);
+  int x = snake.getHeadX();
+  int y = snake.getHeadY();
+  if( x > 0 && snake.notContains(x - 1, y)) {
+    snake.push_start(x - 1, y);
+    snake.pop();
   }
 }
 
 void realLeft() {
-  if(X > 0){
-    matrix.clearPixel(X, Y);
-    X--;
-    matrix.drawPixel(X, Y);
+  int x = snake.getHeadX();
+  int y = snake.getHeadY();
+  if( x < 7 && snake.notContains(x + 1, y)) {
+    snake.push_start(x + 1, y);
+    snake.pop();
   }
 }
-
+/*
 void realDown() {
   if(Y < 7){
     matrix.clearPixel(X, Y);
@@ -145,7 +174,7 @@ void down() {
 void up() {
   realLeft();
 }
-
+*/
 
 void setup() {
   matrix.begin();
@@ -157,9 +186,14 @@ void setup() {
 List a;
 
 void loop() { 
+  snake.print();
+  drawSnake();
+  realLeft();
+  delay(500);
+  /*
  a.push_back(3,5);
  a.print();
- /* int bitMap[8][8] = {
+int bitMap[8][8] = {
     {0,0,0,0,0,0,0,0},
     {0,1,1,0,0,1,1,0},
     {0,1,1,0,0,1,1,0},
