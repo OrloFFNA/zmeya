@@ -97,10 +97,8 @@ void setupSnake() {
   Y = random(8);
   snake.push_back(X,Y);
   */
-  snake.push_back(7 - 1,3);
-  snake.push_back(7 - 1,2);
-  snake.push_back(7 - 1,1);
-  snake.push_back(7 - 1,0);
+  snake.push_back(7 - 2, 3);
+  snake.push_back(7 - 2, 4);
   
 }
 
@@ -142,23 +140,25 @@ void realLeft() {
     snake.pop();
   }
 }
-/*
+
 void realDown() {
-  if(Y < 7){
-    matrix.clearPixel(X, Y);
-    Y++;
-    matrix.drawPixel(X, Y);
+   int x = snake.getHeadX();
+  int y = snake.getHeadY();
+  if( y < 7 && snake.notContains(x, y + 1)) {
+    snake.push_start(x, y + 1);
+    snake.pop();
   }
 }
-
+ 
 void realUp() {
-  if(Y > 0){
-    matrix.clearPixel(X, Y);
-    Y--;
-    matrix.drawPixel(X, Y);
+  int x = snake.getHeadX();
+  int y = snake.getHeadY();
+  if( y > 0 && snake.notContains(x, y - 1)) {
+    snake.push_start(x, y - 1);
+    snake.pop();
   }
 }
-
+/*
 void right() {
   realUp();
 }
@@ -188,7 +188,7 @@ List a;
 void loop() { 
   snake.print();
   drawSnake();
-  realLeft();
+  realUp();
   delay(500);
   /*
  a.push_back(3,5);
