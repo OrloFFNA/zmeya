@@ -3,6 +3,18 @@
 #define Xj A2
 #define Zj 3
 
+extern int __bss_end;
+extern void *__brkval;
+
+int memoryFree()
+{
+   int freeValue;
+   if((int)__brkval == 0)
+      freeValue = ((int)&freeValue) - ((int)&__bss_end);
+   else
+      freeValue = ((int)&freeValue) - ((int)__brkval);
+   return freeValue;
+}
 
 //неважно
 
@@ -55,6 +67,7 @@ class List{
       while (current->next->next){
         current = current->next;
       }
+      delete current->next;
       current->next = NULL;
   }
 
@@ -186,10 +199,33 @@ void setup() {
 List a;
 
 void loop() { 
-  snake.print();
+ // snake.print();
   drawSnake();
+ Serial.println(memoryFree());
+  int x,y,z;
+z = digitalRead(Zj);
+x = analogRead(Xj);
+y = analogRead(Yj);
+
+/*Serial.print("x = ");
+Serial.println(x);
+Serial.print("y = ");
+Serial.println(y);
+*/
+if(x > 700){
+  realRight();
+}
+else if(x < 300){
+  realLeft();
+}
+else if(y > 700){
   realUp();
-  delay(500);
+}
+else if(y < 300){
+  realDown();
+}
+  delay(100);
+  
   /*
  a.push_back(3,5);
  a.print();
