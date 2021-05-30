@@ -168,6 +168,8 @@ void realRight() {
   int y = snake.getHeadY();
   if( x > 0 && snake.notContains(x - 1, y)) {
     snake.push_start(x - 1, y);
+    matrix.drawPixel(y, x - 1);
+    matrix.clearPixel(snake.getLastY(), snake.getLastX ());
     snake.pop();
   }
 }
@@ -177,6 +179,8 @@ void realLeft() {
   int y = snake.getHeadY();
   if( x < 7 && snake.notContains(x + 1, y)) {
     snake.push_start(x + 1, y);
+    matrix.drawPixel(y, x + 1);
+    matrix.clearPixel(snake.getLastY(), snake.getLastX ());
     snake.pop();
   }
 }
@@ -186,6 +190,8 @@ void realDown() {
   int y = snake.getHeadY();
   if( y < 7 && snake.notContains(x, y + 1)) {
     snake.push_start(x, y + 1);
+    matrix.drawPixel(y + 1, x);
+    matrix.clearPixel(snake.getLastY(), snake.getLastX ());
     snake.pop();
   }
 }
@@ -195,6 +201,8 @@ void realUp() {
   int y = snake.getHeadY();
   if( y > 0 && snake.notContains(x, y - 1)) {
     snake.push_start(x, y - 1);
+    matrix.drawPixel(y - 1, x);
+    matrix.clearPixel(snake.getLastY(), snake.getLastX ());
     snake.pop();
   }
 }
@@ -220,14 +228,14 @@ void setup() {
   matrix.begin();
   //Serial.begin(9600);
   setupSnake();
-  
+  drawSnake();
 }
 
 List a;
 
 void loop() { 
  // snake.print();
-  drawSnake();
+ //drawSnake();
  //Serial.println(memoryFree());
   int x,y,z;
 z = digitalRead(Zj);
