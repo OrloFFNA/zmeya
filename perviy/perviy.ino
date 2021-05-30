@@ -33,14 +33,17 @@ class Node{
 class List{
   public:
   Node* head;
+  Node* last;
 
   List(){
     head = NULL;
+    last = NULL;
   }
 //неважно
   void push_back(int x, int y){
     if (head == NULL){
       head = new Node(x, y);
+      last = head;
     }
     else{
       Node* current = head;
@@ -48,6 +51,7 @@ class List{
         current = current->next;
       }
       current->next = new Node(x, y);
+      last = current->next;
     }
   }
 
@@ -69,6 +73,7 @@ class List{
       }
       delete current->next;
       current->next = NULL;
+      last = current;
   }
 
   void push_start(int x, int y){
@@ -84,6 +89,15 @@ class List{
   int getHeadY(){
     return head->y;
   }
+
+  int getLastX(){
+  	return last->x;
+  }
+
+  int getLastY(){
+  	return last->y;
+  }
+  
   bool notContains(int x, int y){
     Node* current = head;
     while (current){
