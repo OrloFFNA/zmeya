@@ -118,6 +118,8 @@ class List{
 TroykaLedMatrix matrix;
 
 List snake;
+int feedX = 7 - 2;
+int feedY = 2;
 List freeSpace;
 
 void genFreeSpace() {
@@ -136,12 +138,8 @@ void setupSnake() {
   Y = random(8);
   snake.push_back(X,Y);
   */
-  snake.push_back(7 - 2, 2);
-  snake.push_back(7 - 2, 3);
-  snake.push_back(7 - 2, 4);
-  snake.push_back(7 - 2, 5);
-  snake.push_back(7 - 2, 6);
-  
+  snake.push_back(7 - 0, 0);
+ 
 }
 
 void drawSnake() {
@@ -171,8 +169,10 @@ void realRight() {
   if( x > 0 && snake.notContains(x - 1, y)) {
     snake.push_start(x - 1, y);
     matrix.drawPixel(y, x - 1);
-    matrix.clearPixel(snake.getLastY(), snake.getLastX ());
+    if (!( feedX == x - 1 && feedY == y )){
+        matrix.clearPixel(snake.getLastY(), snake.getLastX ());
     snake.pop();
+    }
   }
 }
 
@@ -182,8 +182,10 @@ void realLeft() {
   if( x < 7 && snake.notContains(x + 1, y)) {
     snake.push_start(x + 1, y);
     matrix.drawPixel(y, x + 1);
-    matrix.clearPixel(snake.getLastY(), snake.getLastX ());
+    if (!(feedX == x + 1 && feedY == y )){
+        matrix.clearPixel(snake.getLastY(), snake.getLastX ());
     snake.pop();
+    }
   }
 }
 
@@ -193,8 +195,10 @@ void realDown() {
   if( y < 7 && snake.notContains(x, y + 1)) {
     snake.push_start(x, y + 1);
     matrix.drawPixel(y + 1, x);
-    matrix.clearPixel(snake.getLastY(), snake.getLastX ());
+    if (!( feedX == x && feedY == y + 1)){
+        matrix.clearPixel(snake.getLastY(), snake.getLastX ());
     snake.pop();
+    }
   }
 }
  
@@ -204,22 +208,25 @@ void realUp() {
   if( y > 0 && snake.notContains(x, y - 1)) {
     snake.push_start(x, y - 1);
     matrix.drawPixel(y - 1, x);
-    matrix.clearPixel(snake.getLastY(), snake.getLastX ());
+    if (!( feedX == x && feedY == y - 1 )){
+        matrix.clearPixel(snake.getLastY(), snake.getLastX ());
     snake.pop();
+    }
   }
 }
 
-void spawnFeed() {
+/*void spawnFeed() {
   int x = random(8);
   int y = random(8);
   while (snake.)
 }
-
+*/
 void setup() {
   matrix.begin();
   //Serial.begin(9600);
   setupSnake();
   drawSnake();
+  matrix.drawPixel(feedY, feedX);
 }
 
 List a;
@@ -245,7 +252,7 @@ else if(y > 700){
 else if(y < 300){
   realDown();
 }
-  delay(50);
+  delay(500);
   
   
 }
