@@ -57,7 +57,7 @@ class List{
     }
   }
 
-   void print(){
+  void print(){
     Node* current = head;
       while (current){
         Serial.print(current->x);
@@ -84,6 +84,28 @@ class List{
     Node* n = new Node(x, y);
     n->next = head;
     head = n;
+  }
+
+  void remove(int x, int y){
+    Node* current = head;
+        
+    if (current->x == x && current->y == y){
+        Node* n = head->next;
+        delete head;
+        head = n;
+          
+        return;
+    }
+    while (current->next){
+        if (current->next->x == x && current->next->y == y){
+            Node* n = current->next->next;
+            delete current->next;
+            current->next = n;
+          
+            return;
+        }
+        current = current->next;
+    }
   }
 
   int getHeadX(){
