@@ -139,7 +139,10 @@ void setupSnake() {
   snake.push_back(X,Y);
   */
   snake.push_back(7 - 0, 0);
- 
+  snake.push_back(7 - 0, 1); 
+  snake.push_back(7 - 0, 2); 
+  snake.push_back(7 - 0, 3);
+  snake.push_back(7 - 0, 4);
 }
 
 void drawSnake() {
@@ -174,6 +177,9 @@ void realRight() {
     snake.pop();
     }
   }
+  else{
+  matrix.clear();
+  }
 }
 
 void realLeft() {
@@ -186,6 +192,9 @@ void realLeft() {
         matrix.clearPixel(snake.getLastY(), snake.getLastX ());
     snake.pop();
     }
+  }
+  else{
+  matrix.clear();
   }
 }
 
@@ -200,6 +209,9 @@ void realDown() {
     snake.pop();
     }
   }
+  else{
+  matrix.clear();
+  }
 }
  
 void realUp() {
@@ -212,6 +224,9 @@ void realUp() {
         matrix.clearPixel(snake.getLastY(), snake.getLastX ());
     snake.pop();
     }
+  }
+  else{
+  matrix.clear();
   }
 }
 
