@@ -34,6 +34,7 @@ class List{
   public:
   Node* head;
   Node* last;
+  int lenght = 0;
 
   List(){
     head = NULL;
@@ -41,6 +42,7 @@ class List{
   }
 //неважно
   void push_back(int x, int y){
+    lenght++;
     if (head == NULL){
       head = new Node(x, y);
       last = head;
@@ -67,6 +69,7 @@ class List{
   }
 
   void pop(){
+    lenght--;
     Node* current = head;
       while (current->next->next){
         current = current->next;
@@ -77,6 +80,7 @@ class List{
   }
 
   void push_start(int x, int y){
+    lenght++;
     Node* n = new Node(x, y);
     n->next = head;
     head = n;
@@ -114,7 +118,15 @@ class List{
 TroykaLedMatrix matrix;
 
 List snake;
+List freeSpace;
 
+void genFreeSpace() {
+  for(int y = 0; y < 8; y++){
+      for(int x = 0; x < 8; x++){
+        freeSpace.push_back(7 - x, y);
+      }
+  }
+}
 
 void setupSnake() {
   /*
@@ -129,17 +141,7 @@ void setupSnake() {
   snake.push_back(7 - 2, 4);
   snake.push_back(7 - 2, 5);
   snake.push_back(7 - 2, 6);
-  snake.push_back(7 - 3, 6);
-  snake.push_back(7 - 3, 5);
-  snake.push_back(7 - 3, 4);
-  snake.push_back(7 - 3, 3);
-  snake.push_back(7 - 3, 2);
-  snake.push_back(7 - 4, 2);
-  snake.push_back(7 - 4, 3);
-  snake.push_back(7 - 4, 4);
-  snake.push_back(7 - 4, 5);
-  snake.push_back(7 - 4, 6);
-  snake.push_back(7 - 5, 6);
+  
 }
 
 void drawSnake() {
@@ -206,23 +208,12 @@ void realUp() {
     snake.pop();
   }
 }
-/*
-void right() {
-  realUp();
-}
 
-void left() {
-  realDown();
+void spawnFeed() {
+  int x = random(8);
+  int y = random(8);
+  while (snake.)
 }
-
-void down() {
-  realRight();
-}
-
-void up() {
-  realLeft();
-}
-*/
 
 void setup() {
   matrix.begin();
@@ -242,11 +233,6 @@ z = digitalRead(Zj);
 x = analogRead(Xj);
 y = analogRead(Yj);
 
-/*Serial.print("x = ");
-Serial.println(x);
-Serial.print("y = ");
-Serial.println(y);
-*/
 if(x > 700){
   realRight();
 }
@@ -261,52 +247,5 @@ else if(y < 300){
 }
   delay(50);
   
-  /*
- a.push_back(3,5);
- a.print();
-int bitMap[8][8] = {
-    {0,0,0,0,0,0,0,0},
-    {0,1,1,0,0,1,1,0},
-    {0,1,1,0,0,1,1,0},
-    {0,1,1,1,1,1,1,0},
-    {0,1,1,1,1,1,1,0},
-    {0,1,1,0,0,1,1,0},
-    {0,1,1,0,0,1,1,0},
-    {0,0,0,0,0,0,0,0}
-  };
-  drawBitMap(bitMap);
-  delay(1000);
-
-int x,y,z;
-z = digitalRead(Zj);
-x = analogRead(Xj);
-y = analogRead(Yj);
-
-Serial.print("x = ");
-Serial.println(x);
-Serial.print("y = ");
-Serial.println(y);
-
-if(x > 700){
-  right();
-}
-if(x < 300){
-  left();
-}
-if(y > 700){
-  up();
-}
-if(y < 300){
-  down();
-}
-delay(100);
-
-  /*for(int y = 0; y < 8; y++){
-    for(int x = 0; x < 8; x++){
-      matrix.drawPixel(x, y);
-      delay(300);
-    }
-  }
-  matrix.clear();
-*/
+  
 }
