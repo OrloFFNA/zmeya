@@ -132,6 +132,14 @@ class List{
     }
     return true;
   }
+
+  Node* getPoint(int i){
+  	Node* current = head;
+  	while (i >= 0){
+  		current = current->next;
+  	}
+  	return current;
+  }
  
 
 };
