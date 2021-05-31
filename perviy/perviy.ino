@@ -134,11 +134,13 @@ class List{
   }
 
   Node* getPoint(int i){
-  	Node* current = head;
-  	while (i >= 0){
-  		current = current->next;
-  	}
-  	return current;
+    Node* current = head;
+    int k = 0;
+    while (k < i){
+        k++;
+      current = current->next;
+    }
+    return current;
   }
  
 
