@@ -1,6 +1,6 @@
 #include <TroykaLedMatrix.h>
-#define Yj A3
-#define Xj A2
+#define Xj A3
+#define Yj A2
 #define Zj 3
 
 extern int __bss_end;
@@ -57,7 +57,7 @@ class List{
     }
   }
 
-  void print(){
+   void print(){
     Node* current = head;
       while (current){
         Serial.print(current->x);
@@ -86,28 +86,6 @@ class List{
     head = n;
   }
 
-  void remove(int x, int y){
-    Node* current = head;
-    lenght--;
-    if (current->x == x && current->y == y){
-        Node* n = head->next;
-        delete head;
-        head = n;
-          
-        return;
-    }
-    while (current->next){
-        if (current->next->x == x && current->next->y == y){
-            Node* n = current->next->next;
-            delete current->next;
-            current->next = n;
-          
-            return;
-        }
-        current = current->next;
-    }
-  }
-
   int getHeadX(){
     return head->x;
   }
@@ -117,11 +95,11 @@ class List{
   }
 
   int getLastX(){
-  	return last->x;
+    return last->x;
   }
 
   int getLastY(){
-  	return last->y;
+    return last->y;
   }
   
   bool notContains(int x, int y){
@@ -130,28 +108,50 @@ class List{
       if (x == current->x && y == current->y) return false;
       current = current->next;
     }
+   
     return true;
   }
 
-  Node* getPoint(int i){
-    Node* current = head;
-    int k = 0;
-    while (k < i){
-        k++;
-      current = current->next;
-    }
-    return current;
-  }
- 
 
+ void remove(int x, int y){
+  Node* current = head;
+
+  if (current->x == x && current->y == y){
+    Node* n = head->next;
+    delete head;
+    head = n;
+  return;
+  }
+  while (current->next){
+    if (current->next->x == x && current->next->y == y){
+      Node* n = current->next->next;
+      delete current->next;
+      current->next = n;
+
+    return;
+    }
+    current = current->next;
+  }
+}
+
+ Node* getPoint(int i){
+  Node* current = head;
+  int k = 0;
+  while (k < i){
+    k++;
+    current = current->next;
+  }
+  
+  return current;
+  }
 };
 
 
 TroykaLedMatrix matrix;
 
 List snake;
-int feedX = 7 - 2;
-int feedY = 2;
+int feedX = 2;
+int feedY = 4;
 List freeSpace;
 
 void genFreeSpace() {
@@ -170,16 +170,15 @@ void setupSnake() {
   Y = random(8);
   snake.push_back(X,Y);
   */
-  snake.push_back(7 - 0, 0);
-  snake.push_back(7 - 0, 1); 
-  snake.push_back(7 - 0, 2); 
-  snake.push_back(7 - 0, 3);
-  snake.push_back(7 - 0, 4);
-  freeSpace.remove(7 - 0, 0); 
-  freeSpace.remove(7 - 0, 1); 
-  freeSpace.remove(7 - 0, 2); 
-  freeSpace.remove(7 - 0, 3); 
-  freeSpace.remove(7 - 0, 4); 
+  snake.push_back(2, 7); 
+  snake.push_back(3, 7); 
+  snake.push_back(4, 7);
+  snake.push_back(5, 7);
+  freeSpace.remove(2, 7);
+  freeSpace.remove(3, 7);
+  freeSpace.remove(4, 7);
+  freeSpace.remove(5, 7);
+
 }
 
 void drawSnake() {
@@ -189,7 +188,7 @@ void drawSnake() {
     int x = current->x;
     int y = current->y;
     current = current->next;
-    matrix.drawPixel(y, x);
+    matrix.drawPixel(x, y);
   }
 }
  
@@ -206,34 +205,36 @@ void drawBitMap(int bitMap[8][8]){
 void realRight() {
   int x = snake.getHeadX();
   int y = snake.getHeadY();
-  if( x > 0 && snake.notContains(x - 1, y)) {
-    snake.push_start(x - 1, y);
-    matrix.drawPixel(y, x - 1);
-    freeSpace.remove(y, x - 1);
-    if (!( feedX == x - 1 && feedY == y )){
-        matrix.clearPixel(snake.getLastY(), snake.getLastX ());
-        freeSpace.push_start(snake.getLastY(), snake.getLastX ());
-    snake.pop();
+  Serial.print(x);
+  Serial.print("   ");
+  Serial.println(y);
+
+  if( x < 7 && snake.notContains(x + 1, y)) {
+    snake.push_start(x + 1, y);
+    matrix.drawPixel(x + 1, y);
+    if (!( feedX == x + 1 && feedY == y )){
+        matrix.clearPixel(snake.getLastX(), snake.getLastY ());
+        snake.pop();
     }
   }
   else{
-  matrix.clear();
+  //matrix.clear();
   }
 }
 
 void realLeft() {
   int x = snake.getHeadX();
   int y = snake.getHeadY();
-  if( x < 7 && snake.notContains(x + 1, y)) {
-    snake.push_start(x + 1, y);
-    matrix.drawPixel(y, x + 1);
-    if (!(feedX == x + 1 && feedY == y )){
-        matrix.clearPixel(snake.getLastY(), snake.getLastX ());
-    snake.pop();
+  if( x > 0 && snake.notContains(x - 1, y)) {
+    snake.push_start(x - 1, y);
+    matrix.drawPixel(x - 1, y);
+    if (!(feedX == x - 1 && feedY == y )){
+        matrix.clearPixel(snake.getLastX(), snake.getLastY ());
+        snake.pop();
     }
   }
   else{
-  matrix.clear();
+  //matrix.clear();
   }
 }
 
@@ -242,14 +243,14 @@ void realDown() {
   int y = snake.getHeadY();
   if( y < 7 && snake.notContains(x, y + 1)) {
     snake.push_start(x, y + 1);
-    matrix.drawPixel(y + 1, x);
+    matrix.drawPixel(x, y + 1);
     if (!( feedX == x && feedY == y + 1)){
-        matrix.clearPixel(snake.getLastY(), snake.getLastX ());
-    snake.pop();
+        matrix.clearPixel(snake.getLastX(), snake.getLastY ());
+        snake.pop();
     }
   }
   else{
-  matrix.clear();
+  //matrix.clear();
   }
 }
  
@@ -258,38 +259,29 @@ void realUp() {
   int y = snake.getHeadY();
   if( y > 0 && snake.notContains(x, y - 1)) {
     snake.push_start(x, y - 1);
-    matrix.drawPixel(y - 1, x);
+    matrix.drawPixel(x, y -1);
     if (!( feedX == x && feedY == y - 1 )){
-        matrix.clearPixel(snake.getLastY(), snake.getLastX ());
-    snake.pop();
+        matrix.clearPixel(snake.getLastX(), snake.getLastY ());
+        snake.pop();
     }
   }
   else{
-  matrix.clear();
+  //matrix.clear();
   }
 }
 
-void spawnFeed() {
-  matrix.drawPixel(7 - 2, 5);
-  int f = random (freeSpace.lenght);
-  Serial.print(f);
-  Serial.print(" ");
-  Serial.print(freeSpace.lenght);
-  Node* point = freeSpace.getPoint(f);
-  Serial.print(point -> x);
-  Serial.print(" ");
-  Serial.println(point -> y);
-  matrix.drawPixel(point -> y, point -> x);
-  freeSpace.remove(point -> x, point -> x);
+/*void spawnFeed() {
+  int x = random(8);
+  int y = random(8);
+  while (snake.)
 }
-
+*/
 void setup() {
   matrix.begin();
   Serial.begin(9600);
   setupSnake();
   drawSnake();
-  matrix.drawPixel(feedY, feedX);
-  genFreeSpace();
+  matrix.drawPixel(feedX, feedY);
 }
 
 List a;
@@ -303,10 +295,12 @@ z = digitalRead(Zj);
 x = analogRead(Xj);
 y = analogRead(Yj);
 
-if(x > 700){
+//Serial.println(x);
+
+if(x < 300){
   realRight();
 }
-else if(x < 300){
+else if(x > 700){
   realLeft();
 }
 else if(y > 700){
@@ -315,8 +309,7 @@ else if(y > 700){
 else if(y < 300){
   realDown();
 }
-else if(z > 0){
-  spawnFeed();
-}
-  delay(500);
+  delay(200);
+  
+  
 }
