@@ -10,14 +10,12 @@ List snake;
 int feedX = 2;
 int feedY = 4;
 
+void genFreeSpace();
+void right();
+void left();
+void down();
+void up();
 
-void genFreeSpace() {
-  for(int y = 0; y < 8; y++){
-      for(int x = 0; x < 8; x++){
-        freeSpace.push_back(x, y);
-      }
-  }
-}
 
 
 void setupSnake() {
@@ -50,7 +48,55 @@ void drawSnake() {
     matrix.drawPixel(x, y);
   }
 }
+
+void setup() {
+  matrix.begin();
+  Serial.begin(9600);
+  setupSnake();
+  drawSnake();
+  genFreeSpace();
+  matrix.drawPixel(feedX, feedY);
+  freeSpace.remove(feedX, feedY);
+}
+
+
+void loop() { 
+ // snake.print();
+ //drawSnake();
+ //Serial.println(memoryFree());
+ Serial.println(freeSpace.notContains(2, 4));
+ Serial.println(freeSpace.lenght);
+  int x,y,z;
+z = digitalRead(Zj);
+x = analogRead(Xj);
+y = analogRead(Yj);
+
+//Serial.println(x);
+
+if(x < 300){
+  right();
+}
+else if(x > 700){
+  left();
+}
+else if(y > 700){
+  up();
+}
+else if(y < 300){
+  down();
+}
+  delay(200);
+  
+}
  
+
+ void genFreeSpace() {
+  for(int y = 0; y < 8; y++){
+      for(int x = 0; x < 8; x++){
+        freeSpace.push_back(x, y);
+      }
+  }
+}
 void right() {
   int x = snake.getHeadX();
   int y = snake.getHeadY();
@@ -157,42 +203,4 @@ void spawnFeed() {
   
 }
 
-void setup() {
-  matrix.begin();
-  Serial.begin(9600);
-  setupSnake();
-  drawSnake();
-  genFreeSpace();
-  matrix.drawPixel(feedX, feedY);
-  freeSpace.remove(feedX, feedY);
-}
 
-
-void loop() { 
- // snake.print();
- //drawSnake();
- //Serial.println(memoryFree());
- Serial.println(freeSpace.notContains(2, 4));
- Serial.println(freeSpace.lenght);
-  int x,y,z;
-z = digitalRead(Zj);
-x = analogRead(Xj);
-y = analogRead(Yj);
-
-//Serial.println(x);
-
-if(x < 300){
-  right();
-}
-else if(x > 700){
-  left();
-}
-else if(y > 700){
-  up();
-}
-else if(y < 300){
-  down();
-}
-  delay(200);
-  
-}
