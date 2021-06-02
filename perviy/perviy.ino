@@ -115,7 +115,7 @@ class List{
 
  void remove(int x, int y){
   Node* current = head;
-
+  length--;
   if (current->x == x && current->y == y){
     Node* n = head->next;
     delete head;
@@ -205,16 +205,14 @@ void drawBitMap(int bitMap[8][8]){
 void realRight() {
   int x = snake.getHeadX();
   int y = snake.getHeadY();
-  Serial.print(x);
-  Serial.print("   ");
-  Serial.println(y);
-
   if( x < 7 && snake.notContains(x + 1, y)) {
+    freeSpace.remove(x + 1, y);
     snake.push_start(x + 1, y);
     matrix.drawPixel(x + 1, y);
     if (!( feedX == x + 1 && feedY == y )){
         matrix.clearPixel(snake.getLastX(), snake.getLastY ());
         snake.pop();
+        freeSpace.push_back(snake.getLastX(), snake.getLastY ());
     }
   }
   else{
