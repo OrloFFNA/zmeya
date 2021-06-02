@@ -115,7 +115,7 @@ class List{
 
  void remove(int x, int y){
   Node* current = head;
-  length--;
+  lenght--;
   if (current->x == x && current->y == y){
     Node* n = head->next;
     delete head;
@@ -214,6 +214,11 @@ void realRight() {
         snake.pop();
         freeSpace.push_back(snake.getLastX(), snake.getLastY ());
     }
+    else{
+      freeSpace.push_back(feedX, feedY);//возможно ошибка
+      feedX = -1;
+      feedY = -1;
+    }
   }
   else{
   //matrix.clear();
@@ -224,11 +229,18 @@ void realLeft() {
   int x = snake.getHeadX();
   int y = snake.getHeadY();
   if( x > 0 && snake.notContains(x - 1, y)) {
+    freeSpace.remove(x - 1, y);
     snake.push_start(x - 1, y);
     matrix.drawPixel(x - 1, y);
     if (!(feedX == x - 1 && feedY == y )){
         matrix.clearPixel(snake.getLastX(), snake.getLastY ());
         snake.pop();
+        freeSpace.push_back(snake.getLastX(), snake.getLastY ());
+    }
+    else{
+      freeSpace.push_back(feedX, feedY);//возможно ошибка
+      feedX = -1;
+      feedY = -1;
     }
   }
   else{
@@ -237,14 +249,21 @@ void realLeft() {
 }
 
 void realDown() {
-   int x = snake.getHeadX();
+  int x = snake.getHeadX();
   int y = snake.getHeadY();
   if( y < 7 && snake.notContains(x, y + 1)) {
+    freeSpace.remove(x, y + 1);
     snake.push_start(x, y + 1);
     matrix.drawPixel(x, y + 1);
     if (!( feedX == x && feedY == y + 1)){
         matrix.clearPixel(snake.getLastX(), snake.getLastY ());
         snake.pop();
+        freeSpace.push_back(snake.getLastX(), snake.getLastY ());
+    }
+    else{
+      freeSpace.push_back(feedX, feedY);//возможно ошибка
+      feedX = -1;
+      feedY = -1;
     }
   }
   else{
@@ -256,11 +275,18 @@ void realUp() {
   int x = snake.getHeadX();
   int y = snake.getHeadY();
   if( y > 0 && snake.notContains(x, y - 1)) {
+    freeSpace.remove(x, y - 1);
     snake.push_start(x, y - 1);
-    matrix.drawPixel(x, y -1);
+    matrix.drawPixel(x, y - 1);
     if (!( feedX == x && feedY == y - 1 )){
         matrix.clearPixel(snake.getLastX(), snake.getLastY ());
         snake.pop();
+        freeSpace.push_back(snake.getLastX(), snake.getLastY ());
+    }
+    else{
+      freeSpace.push_back(feedX, feedY);//возможно ошибка
+      feedX = -1;
+      feedY = -1;
     }
   }
   else{
@@ -268,18 +294,28 @@ void realUp() {
   }
 }
 
-/*void spawnFeed() {
-  int x = random(8);
-  int y = random(8);
-  while (snake.)
+void spawnFeed() {
+  int g = random(freeSpace.lenght);
+  Node* point = freeSpace.getPoint(g);
+  int x = point -> x;
+  int y = point -> y;
+  Serial.print(x);
+  Serial.print("  ");
+  Serial.println(y);
+  feedX = x;
+  feedY = y;
+  matrix.drawPixel(x, y);
+  
 }
-*/
+
 void setup() {
   matrix.begin();
   Serial.begin(9600);
   setupSnake();
   drawSnake();
+  genFreeSpace();
   matrix.drawPixel(feedX, feedY);
+  freeSpace.remove(feedX, feedY);
 }
 
 List a;
@@ -288,6 +324,8 @@ void loop() {
  // snake.print();
  //drawSnake();
  //Serial.println(memoryFree());
+ Serial.println(freeSpace.notContains(2, 4));
+ Serial.println(freeSpace.lenght);
   int x,y,z;
 z = digitalRead(Zj);
 x = analogRead(Xj);
