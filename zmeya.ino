@@ -3,156 +3,13 @@
 #define Yj A2
 #define Zj 3
 
-extern int __bss_end;
-extern void *__brkval;
-
-int memoryFree()
-{
-   int freeValue;
-   if((int)__brkval == 0)
-      freeValue = ((int)&freeValue) - ((int)&__bss_end);
-   else
-      freeValue = ((int)&freeValue) - ((int)__brkval);
-   return freeValue;
-}
-
-//неважно
-
-class Node{
-    public:
-    int x;
-    int y;
-    Node* next;
-    Node(int x, int y){
-      this->x = x;
-      this->y = y;
-      next = NULL;   
-    }
-  };
-
-class List{
-  public:
-  Node* head;
-  Node* last;
-  int lenght = 0;
-
-  List(){
-    head = NULL;
-    last = NULL;
-  }
-//неважно
-  void push_back(int x, int y){
-    lenght++;
-    if (head == NULL){
-      head = new Node(x, y);
-      last = head;
-    }
-    else{
-      Node* current = head;
-      while (current->next){
-        current = current->next;
-      }
-      current->next = new Node(x, y);
-      last = current->next;
-    }
-  }
-
-   void print(){
-    Node* current = head;
-      while (current){
-        Serial.print(current->x);
-        Serial.print( " " );
-        Serial.println(current->y);
-        current = current->next;
-      }
-      Serial.println();
-  }
-
-  void pop(){
-    lenght--;
-    Node* current = head;
-      while (current->next->next){
-        current = current->next;
-      }
-      delete current->next;
-      current->next = NULL;
-      last = current;
-  }
-
-  void push_start(int x, int y){
-    lenght++;
-    Node* n = new Node(x, y);
-    n->next = head;
-    head = n;
-  }
-
-  int getHeadX(){
-    return head->x;
-  }
-
-  int getHeadY(){
-    return head->y;
-  }
-
-  int getLastX(){
-    return last->x;
-  }
-
-  int getLastY(){
-    return last->y;
-  }
-  
-  bool notContains(int x, int y){
-    Node* current = head;
-    while (current){
-      if (x == current->x && y == current->y) return false;
-      current = current->next;
-    }
-   
-    return true;
-  }
-
-
- void remove(int x, int y){
-  Node* current = head;
-  lenght--;
-  if (current->x == x && current->y == y){
-    Node* n = head->next;
-    delete head;
-    head = n;
-  return;
-  }
-  while (current->next){
-    if (current->next->x == x && current->next->y == y){
-      Node* n = current->next->next;
-      delete current->next;
-      current->next = n;
-
-    return;
-    }
-    current = current->next;
-  }
-}
-
- Node* getPoint(int i){
-  Node* current = head;
-  int k = 0;
-  while (k < i){
-    k++;
-    current = current->next;
-  }
-  
-  return current;
-  }
-};
-
-
 TroykaLedMatrix matrix;
-
+List freeSpace;
 List snake;
+
 int feedX = 2;
 int feedY = 4;
-List freeSpace;
+
 
 void genFreeSpace() {
   for(int y = 0; y < 8; y++){
@@ -161,6 +18,7 @@ void genFreeSpace() {
       }
   }
 }
+
 
 void setupSnake() {
   /*
@@ -181,6 +39,7 @@ void setupSnake() {
 
 }
 
+
 void drawSnake() {
   matrix.clear();
   Node* current = snake.head;
@@ -192,17 +51,7 @@ void drawSnake() {
   }
 }
  
-void drawBitMap(int bitMap[8][8]){
-  for(int y = 0; y < 8; y++){
-    for(int x = 0; x < 8; x++){
-     if(bitMap[y][x] == 1){
-      matrix.drawPixel(y, x);
-     }
-    }
-  }
-}
-
-void realRight() {
+void right() {
   int x = snake.getHeadX();
   int y = snake.getHeadY();
   if( x < 7 && snake.notContains(x + 1, y)) {
@@ -225,7 +74,7 @@ void realRight() {
   }
 }
 
-void realLeft() {
+void left() {
   int x = snake.getHeadX();
   int y = snake.getHeadY();
   if( x > 0 && snake.notContains(x - 1, y)) {
@@ -248,7 +97,7 @@ void realLeft() {
   }
 }
 
-void realDown() {
+void down() {
   int x = snake.getHeadX();
   int y = snake.getHeadY();
   if( y < 7 && snake.notContains(x, y + 1)) {
@@ -271,7 +120,7 @@ void realDown() {
   }
 }
  
-void realUp() {
+void up() {
   int x = snake.getHeadX();
   int y = snake.getHeadY();
   if( y > 0 && snake.notContains(x, y - 1)) {
@@ -318,7 +167,6 @@ void setup() {
   freeSpace.remove(feedX, feedY);
 }
 
-List a;
 
 void loop() { 
  // snake.print();
@@ -334,18 +182,17 @@ y = analogRead(Yj);
 //Serial.println(x);
 
 if(x < 300){
-  realRight();
+  right();
 }
 else if(x > 700){
-  realLeft();
+  left();
 }
 else if(y > 700){
-  realUp();
+  up();
 }
 else if(y < 300){
-  realDown();
+  down();
 }
   delay(200);
-  
   
 }
