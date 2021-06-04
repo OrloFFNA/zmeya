@@ -1,4 +1,6 @@
 #include <TroykaLedMatrix.h>
+#include "linked_list.h"
+#include "memory_tools.h"
 #define Xj A3
 #define Yj A2
 #define Zj 3
@@ -202,5 +204,3 @@ void spawnFeed() {
   matrix.drawPixel(x, y);
   
 }
-
-
