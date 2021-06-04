@@ -100,6 +100,7 @@ else if(y < 300){
   }
 }
 void right() {
+  
   int x = snake.getHeadX();
   int y = snake.getHeadY();
   if( x < 7 && snake.notContains(x + 1, y)) {
@@ -107,12 +108,14 @@ void right() {
     snake.push_start(x + 1, y);
     matrix.drawPixel(x + 1, y);
     if (!( feedX == x + 1 && feedY == y )){
+      Serial.println("змея сдвинута");
         matrix.clearPixel(snake.getLastX(), snake.getLastY ());
         snake.pop();
         freeSpace.push_back(snake.getLastX(), snake.getLastY ());
     }
     else{
-      freeSpace.push_back(feedX, feedY);//возможно ошибка
+      Serial.println("еда съедина");
+      //freeSpace.push_back(feedX, feedY);//возможно ошибка
       feedX = -1;
       feedY = -1;
     }
@@ -130,12 +133,14 @@ void left() {
     snake.push_start(x - 1, y);
     matrix.drawPixel(x - 1, y);
     if (!(feedX == x - 1 && feedY == y )){
+      Serial.println("змея сдвинута");
         matrix.clearPixel(snake.getLastX(), snake.getLastY ());
         snake.pop();
         freeSpace.push_back(snake.getLastX(), snake.getLastY ());
     }
     else{
-      freeSpace.push_back(feedX, feedY);//возможно ошибка
+      Serial.println("еда съедина");
+      //freeSpace.push_back(feedX, feedY);//возможно ошибка
       feedX = -1;
       feedY = -1;
     }
@@ -153,12 +158,14 @@ void down() {
     snake.push_start(x, y + 1);
     matrix.drawPixel(x, y + 1);
     if (!( feedX == x && feedY == y + 1)){
+      Serial.println("змея сдвинута");
         matrix.clearPixel(snake.getLastX(), snake.getLastY ());
         snake.pop();
         freeSpace.push_back(snake.getLastX(), snake.getLastY ());
     }
     else{
-      freeSpace.push_back(feedX, feedY);//возможно ошибка
+      Serial.println("еда съедина");
+      //freeSpace.push_back(feedX, feedY);//возможно ошибка
       feedX = -1;
       feedY = -1;
     }
@@ -176,12 +183,14 @@ void up() {
     snake.push_start(x, y - 1);
     matrix.drawPixel(x, y - 1);
     if (!( feedX == x && feedY == y - 1 )){
+      Serial.println("змея сдвинута");
         matrix.clearPixel(snake.getLastX(), snake.getLastY ());
         snake.pop();
         freeSpace.push_back(snake.getLastX(), snake.getLastY ());
     }
     else{
-      freeSpace.push_back(feedX, feedY);//возможно ошибка
+      Serial.println("еда съедина");
+      //freeSpace.push_back(feedX, feedY);//возможно ошибка
       feedX = -1;
       feedY = -1;
     }
